@@ -16,10 +16,16 @@ export default function Counter() {
   useEffect(() => {
     const startDate: Date = new Date("2024-01-17T22:00:00");
 
+    const targetGMT = 4;
+
+    const startDateInGMT = new Date(
+      startDate.getTime() + targetGMT * 60 * 60 * 1000
+    );
+
     const calculateTimeElapsed = () => {
       const now = new Date();
 
-      let difference = Math.floor((now.getTime() - startDate.getTime()) / 1000);
+      let difference = Math.floor((now.getTime() - startDateInGMT.getTime()) / 1000);
 
       const years = Math.floor(difference / (365.25 * 24 * 60 * 60));
       difference -= years * 365.25 * 24 * 60 * 60;
