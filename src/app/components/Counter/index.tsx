@@ -16,7 +16,7 @@ export default function Counter() {
   useEffect(() => {
     const startDate: Date = new Date("2024-01-17T22:00:00");
 
-    const targetGMT = 4;
+    const targetGMT = 0;
 
     const startDateInGMT = new Date(
       startDate.getTime() + targetGMT * 60 * 60 * 1000
@@ -25,24 +25,50 @@ export default function Counter() {
     const calculateTimeElapsed = () => {
       const now = new Date();
 
-      let difference = Math.floor((now.getTime() - startDateInGMT.getTime()) / 1000);
+      let currentDate = new Date(startDateInGMT);
+      let years = 0, months = 0, days = 0;
 
-      const years = Math.floor(difference / (365.25 * 24 * 60 * 60));
-      difference -= years * 365.25 * 24 * 60 * 60;
+      // Calcular anos
+      while (currentDate <= now) {
+        const nextYear = new Date(currentDate);
+        nextYear.setFullYear(currentDate.getFullYear() + 1);
+        if (nextYear <= now) {
+          years++;
+          currentDate = nextYear;
+        } else {
+          break;
+        }
+      }
 
-      const months = Math.floor(difference / (30.44 * 24 * 60 * 60));
-      difference -= months * 30.44 * 24 * 60 * 60;
+      // Calcular meses
+      while (currentDate <= now) {
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(currentDate.getMonth() + 1);
+        if (nextMonth <= now) {
+          months++;
+          currentDate = nextMonth;
+        } else {
+          break;
+        }
+      }
 
-      const days = Math.floor(difference / (24 * 60 * 60));
-      difference -= days * 24 * 60 * 60;
+      // Calcular dias
+      while (currentDate <= now) {
+        const nextDay = new Date(currentDate);
+        nextDay.setDate(currentDate.getDate() + 1);
+        if (nextDay <= now) {
+          days++;
+          currentDate = nextDay;
+        } else {
+          break;
+        }
+      }
 
-      const hours = Math.floor(difference / (60 * 60));
-      difference -= hours * 60 * 60;
-
-      const minutes = Math.floor(difference / 60);
-      difference -= minutes * 60;
-
-      const seconds = Math.floor(difference);
+      // Calcular horas, minutos e segundos restantes
+      const difference = now.getTime() - currentDate.getTime();
+      const hours = Math.floor(difference / (60 * 60 * 1000));
+      const minutes = Math.floor((difference % (60 * 60 * 1000)) / (60 * 1000));
+      const seconds = Math.floor((difference % (60 * 1000)) / 1000);
 
       setTimeElapsed({ years, months, days, hours, minutes, seconds });
     };
