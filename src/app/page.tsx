@@ -12,7 +12,9 @@ export default function Home() {
     "/image5.jpg",
     "/image6.jpg",
     "/image8.jpg",
-    "/image9.jpg"
+    "/image9.jpg",
+    "/image10.jpg",
+    "/image11.jpg"
   ];
   
   return (
